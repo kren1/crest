@@ -307,7 +307,13 @@ void SymbolicInterpreter::Branch(id_t id, branch_id_t bid, bool pred_value) {
 }
 
 
+static bool firstTime = false;
+
 value_t SymbolicInterpreter::NewInput(type_t type, addr_t addr) {
+  if(!firstTime) {
+    firstTime = true;
+    srand(13242);
+  }
   IFDEBUG(fprintf(stderr, "symbolic_input %d %lu\n", type, addr));
 
   mem_[addr] = new SymbolicExpr(1, num_inputs_);
@@ -320,6 +326,7 @@ value_t SymbolicInterpreter::NewInput(type_t type, addr_t addr) {
     // Generate a new random input.
     // TODO: User a better pseudorandom number generator.
     ret = CastTo(rand(), type);
+ //   ret = CastTo(5, type);
     ex_.mutable_inputs()->push_back(ret);
   }
 

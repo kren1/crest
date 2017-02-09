@@ -197,7 +197,14 @@ void Search::RunProgram(const vector<value_t>& inputs, SymbolicExecution* ex) {
     // TODO(jburnim): Devise a better system for capping the iterations.
     exit(0);
   }
-
+  
+  char num[30];
+  snprintf(num,30, "ITER_NUM=%d", num_iters_);
+  putenv(num);  
+  char fname[32];
+  snprintf(fname, 32, "input.%d", num_iters_);
+//  printf("==== %s: %d\n", fname, inputs.size());
+  WriteInputToFileOrDie(fname, inputs);
   // Run the program.
   LaunchProgram(inputs);
 
